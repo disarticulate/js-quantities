@@ -5,7 +5,7 @@
   "description": "JavaScript library for quantity calculation and unit conversion",
   "version": "1.7.0",
   "homepage": "http://gentooboontoo.github.io/js-quantities/",
-  "scripts: { 
+  "scripts": { 
     "build" : "./make" 
   },
   "repository": {
