@@ -245,7 +245,7 @@ var UNITS = {
   /* length units */
   "<meter>" :  [["m","meter","meters","metre","metres"], 1.0, "length", ["<meter>"] ],
   "<inch>"  :  [["in","inch","inches","\""], 0.0254, "length", ["<meter>"]],
-  "<foot>"  :  [["ft","foot","feet","'"], 0.3048, "length", ["<meter>"]],
+  "<foot>"  :  [["ft","foot","feet","us-ft","us_ft","'"], 0.3048, "length", ["<meter>"]],
   "<yard>"  :  [["yd","yard","yards"], 0.9144, "length", ["<meter>"]],
   "<mile>"  :  [["mi","mile","miles"], 1609.344, "length", ["<meter>"]],
   "<naut-mile>" : [["nmi"], 1852, "length", ["<meter>"]],
