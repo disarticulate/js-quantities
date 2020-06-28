@@ -5,9 +5,19 @@ import QtyError from "./error.js";
 import {
   compareArray,
   isNumber,
-  isQty,
   isString
 } from "./utils.js";
+
+/**
+ * Tests if a value is a Qty instance
+ *
+ * @param {*} value - Value to test
+ *
+ * @returns {boolean} true if value is a Qty instance, false otherwise
+ */
+export function isQty(value) {
+  return value instanceof Qty;
+}
 
 export default function Qty(initValue, initUnits) {
   assertValidConstructorArgs.apply(null, arguments);
@@ -68,6 +78,7 @@ Qty.prototype = {
  * @param {*} value - Value to test
  * @param {string} [units] - Optional units when value is passed as a number
  *
+ * @returns {void}
  * @throws {QtyError} if constructor arguments are invalid
  */
 function assertValidConstructorArgs(value, units) {

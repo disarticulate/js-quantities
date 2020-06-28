@@ -21,23 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Qty = factory());
-}(this, (function () { 'use strict';
-
-/**
- * Tests if a value is a Qty instance
- *
- * @param {*} value - Value to test
- *
- * @returns {boolean} true if value is a Qty instance, false otherwise
- */
-function isQty(value) {
-  return value instanceof Qty$1;
-}
-
 /**
  * Tests if a value is a string
  *
@@ -116,8 +99,9 @@ function assign(target, properties) {
  * Safely multiplies numbers while avoiding floating errors
  * like 0.1 * 0.1 => 0.010000000000000002
  *
+ * @param {...number} numbers - numbers to multiply
+ *
  * @returns {number} result
- * @param {...number} number
  */
 function mulSafe() {
   var result = 1, decimals = 0;
@@ -245,10 +229,10 @@ var UNITS = {
   /* length units */
   "<meter>" :  [["m","meter","meters","metre","metres"], 1.0, "length", ["<meter>"] ],
   "<inch>"  :  [["in","inch","inches","\""], 0.0254, "length", ["<meter>"]],
-  "<foot>"  :  [["ft","foot","feet","us-ft","us_ft","'"], 0.3048, "length", ["<meter>"]],
+  "<foot>"  :  [["ft","foot","feet","'"], 0.3048, "length", ["<meter>"]],
   "<yard>"  :  [["yd","yard","yards"], 0.9144, "length", ["<meter>"]],
   "<mile>"  :  [["mi","mile","miles"], 1609.344, "length", ["<meter>"]],
-  "<naut-mile>" : [["nmi"], 1852, "length", ["<meter>"]],
+  "<naut-mile>" : [["nmi","naut-mile"], 1852, "length", ["<meter>"]],
   "<league>":  [["league","leagues"], 4828, "length", ["<meter>"]],
   "<furlong>": [["furlong","furlongs"], 201.2, "length", ["<meter>"]],
   "<rod>"   :  [["rd","rod","rods"], 5.029, "length", ["<meter>"]],
@@ -263,15 +247,15 @@ var UNITS = {
   "<light-minute>":[["lmin","light-minute"], 17987550000, "length", ["<meter>"]],
   "<light-year>" : [["ly","light-year"], 9460528000000000, "length", ["<meter>"]],
   "<parsec>"  : [["pc","parsec","parsecs"], 30856780000000000, "length", ["<meter>"]],
-  "<datamile>"  :  [["DM"], 1828.8, "length", ["<meter>"]],
+  "<datamile>"  :  [["DM","datamile"], 1828.8, "length", ["<meter>"]],
 
   /* mass */
   "<kilogram>" : [["kg","kilogram","kilograms"], 1.0, "mass", ["<kilogram>"]],
   "<AMU>" : [["u","AMU","amu"], 1.660538921e-27, "mass", ["<kilogram>"]],
   "<dalton>" : [["Da","Dalton","Daltons","dalton","daltons"], 1.660538921e-27, "mass", ["<kilogram>"]],
   "<slug>" : [["slug","slugs"], 14.5939029, "mass", ["<kilogram>"]],
-  "<short-ton>" : [["tn","ton"], 907.18474, "mass", ["<kilogram>"]],
-  "<metric-ton>":[["tonne"], 1000, "mass", ["<kilogram>"]],
+  "<short-ton>" : [["tn","ton","short-ton"], 907.18474, "mass", ["<kilogram>"]],
+  "<metric-ton>":[["tonne","metric-ton"], 1000, "mass", ["<kilogram>"]],
   "<carat>" : [["ct","carat","carats"], 0.0002, "mass", ["<kilogram>"]],
   "<pound>" : [["lbs","lb","pound","pounds","#"], 0.45359237, "mass", ["<kilogram>"]],
   "<ounce>" : [["oz","ounce","ounces"], 0.0283495231, "mass", ["<kilogram>"]],
@@ -288,13 +272,19 @@ var UNITS = {
   /* volume */
   "<liter>" : [["l","L","liter","liters","litre","litres"], 0.001, "volume", ["<meter>","<meter>","<meter>"]],
   "<gallon>":  [["gal","gallon","gallons"], 0.0037854118, "volume", ["<meter>","<meter>","<meter>"]],
+  "<gallon-imp>":  [["galimp","gallon-imp","gallons-imp"], 0.0045460900, "volume", ["<meter>","<meter>","<meter>"]],
   "<quart>":  [["qt","quart","quarts"], 0.00094635295, "volume", ["<meter>","<meter>","<meter>"]],
   "<pint>":  [["pt","pint","pints"], 0.000473176475, "volume", ["<meter>","<meter>","<meter>"]],
+  "<pint-imp>":  [["ptimp","pint-imp","pints-imp"], 5.6826125e-4, "volume", ["<meter>","<meter>","<meter>"]],
   "<cup>":  [["cu","cup","cups"], 0.000236588238, "volume", ["<meter>","<meter>","<meter>"]],
   "<fluid-ounce>":  [["floz","fluid-ounce","fluid-ounces"], 2.95735297e-5, "volume", ["<meter>","<meter>","<meter>"]],
+  "<fluid-ounce-imp>":  [["flozimp", "floz-imp","fluid-ounce-imp","fluid-ounces-imp"], 2.84130625e-5, "volume", ["<meter>","<meter>","<meter>"]],
   "<tablespoon>":  [["tb","tbsp","tbs","tablespoon","tablespoons"], 1.47867648e-5, "volume", ["<meter>","<meter>","<meter>"]],
   "<teaspoon>":  [["tsp","teaspoon","teaspoons"], 4.92892161e-6, "volume", ["<meter>","<meter>","<meter>"]],
   "<bushel>":  [["bu","bsh","bushel","bushels"], 0.035239072, "volume", ["<meter>","<meter>","<meter>"]],
+  "<oilbarrel>":  [["bbl","oil-barrel","oil-barrels"], 0.158987294928, "volume", ["<meter>","<meter>","<meter>"]],
+  "<beerbarrel>":  [["bl","bl-us","beer-barrel","beer-barrels"], 0.1173477658, "volume", ["<meter>","<meter>","<meter>"]],
+  "<beerbarrel-imp>":  [["blimp","bl-imp","beer-barrel-imp","beer-barrels-imp"], 0.16365924, "volume", ["<meter>","<meter>","<meter>"]],
 
   /* speed */
   "<kph>" : [["kph"], 0.277777778, "speed", ["<meter>"], ["<second>"]],
@@ -310,10 +300,10 @@ var UNITS = {
   "<celsius>" : [["degC","celsius","celsius","centigrade"], 1.0, "temperature", ["<kelvin>"]],
   "<fahrenheit>" : [["degF","fahrenheit"], 5 / 9, "temperature", ["<kelvin>"]],
   "<rankine>" : [["degR","rankine"], 5 / 9, "temperature", ["<kelvin>"]],
-  "<temp-K>"  : [["tempK"], 1.0, "temperature", ["<temp-K>"]],
-  "<temp-C>"  : [["tempC"], 1.0, "temperature", ["<temp-K>"]],
-  "<temp-F>"  : [["tempF"], 5 / 9, "temperature", ["<temp-K>"]],
-  "<temp-R>"  : [["tempR"], 5 / 9, "temperature", ["<temp-K>"]],
+  "<temp-K>"  : [["tempK","temp-K"], 1.0, "temperature", ["<temp-K>"]],
+  "<temp-C>"  : [["tempC","temp-C"], 1.0, "temperature", ["<temp-K>"]],
+  "<temp-F>"  : [["tempF","temp-F"], 5 / 9, "temperature", ["<temp-K>"]],
+  "<temp-R>"  : [["tempR","temp-R"], 5 / 9, "temperature", ["<temp-K>"]],
 
   /* time */
   "<second>":  [["s","sec","secs","second","seconds"], 1.0, "time", ["<second>"]],
@@ -334,8 +324,8 @@ var UNITS = {
   "<torr>" : [["torr"], 133.322368, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
   "<atm>" : [["atm","ATM","atmosphere","atmospheres"], 101325, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
   "<psi>" : [["psi"], 6894.76, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
-  "<cmh2o>" : [["cmH2O"], 98.0638, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
-  "<inh2o>" : [["inH2O"], 249.082052, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
+  "<cmh2o>" : [["cmH2O","cmh2o"], 98.0638, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
+  "<inh2o>" : [["inH2O","inh2o"], 249.082052, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
 
   /* viscosity */
   "<poise>"  : [["P","poise"], 0.1, "viscosity", ["<kilogram>"],["<meter>","<second>"] ],
@@ -350,7 +340,7 @@ var UNITS = {
 
   /* activity */
   "<katal>" :  [["kat","katal","Katal"], 1.0, "activity", ["<mole>"], ["<second>"]],
-  "<unit>"  :  [["U","enzUnit"], 16.667e-16, "activity", ["<mole>"], ["<second>"]],
+  "<unit>"  :  [["U","enzUnit","unit"], 16.667e-16, "activity", ["<mole>"], ["<second>"]],
 
   /* capacitance */
   "<farad>" :  [["F","farad","Farad"], 1.0, "capacitance", ["<second>","<second>","<second>","<second>","<ampere>","<ampere>"], ["<meter>", "<meter>", "<kilogram>"]],
@@ -391,7 +381,7 @@ var UNITS = {
   "<btu>"   :  [["BTU","btu","BTUs"], 1055.056, "energy", ["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
   "<calorie>" :  [["cal","calorie","calories"], 4.18400, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
   "<Calorie>" :  [["Cal","Calorie","Calories"], 4184.00, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
-  "<therm-US>" : [["th","therm","therms","Therm"], 105480400, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
+  "<therm-US>" : [["th","therm","therms","Therm","therm-US"], 105480400, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
   "<Wh>" : [["Wh"], 3600, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
 
   /* force */
@@ -431,15 +421,15 @@ var UNITS = {
 
   /* power */
   "<watt>"  : [["W","watt","watts"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
-  "<volt-ampere>"  : [["VA"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
-  "<volt-ampere-reactive>"  : [["var","Var","VAr","VAR"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
+  "<volt-ampere>"  : [["VA","volt-ampere"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
+  "<volt-ampere-reactive>"  : [["var","Var","VAr","VAR","volt-ampere-reactive"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
   "<horsepower>"  :  [["hp","horsepower"], 745.699872, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
 
   /* radiation */
   "<gray>" : [["Gy","gray","grays"], 1.0, "radiation", ["<meter>","<meter>"], ["<second>","<second>"]],
   "<roentgen>" : [["R","roentgen"], 0.009330, "radiation", ["<meter>","<meter>"], ["<second>","<second>"]],
   "<sievert>" : [["Sv","sievert","sieverts"], 1.0, "radiation", ["<meter>","<meter>"], ["<second>","<second>"]],
-  "<becquerel>" : [["Bq","bequerel","bequerels"], 1.0, "radiation", ["<1>"],["<second>"]],
+  "<becquerel>" : [["Bq","becquerel","becquerels"], 1.0, "radiation", ["<1>"],["<second>"]],
   "<curie>" : [["Ci","curie","curies"], 3.7e10, "radiation", ["<1>"],["<second>"]],
 
   /* rate */
@@ -457,8 +447,8 @@ var UNITS = {
   "<cell>" : [["cells","cell"], 1, "counting", ["<each>"]],
   "<each>" : [["each"], 1.0, "counting", ["<each>"]],
   "<count>" : [["count"], 1.0, "counting", ["<each>"]],
-  "<base-pair>"  : [["bp"], 1.0, "counting", ["<each>"]],
-  "<nucleotide>" : [["nt"], 1.0, "counting", ["<each>"]],
+  "<base-pair>"  : [["bp","base-pair"], 1.0, "counting", ["<each>"]],
+  "<nucleotide>" : [["nt","nucleotide"], 1.0, "counting", ["<each>"]],
   "<molecule>" : [["molecule","molecules"], 1.0, "counting", ["<1>"]],
   "<dozen>" :  [["doz","dz","dozen"],12.0,"prefix_only", ["<each>"]],
   "<percent>": [["%","percent"], 0.01, "prefix_only", ["<1>"]],
@@ -481,6 +471,7 @@ var UNITY_ARRAY = [UNITY];
  * @param {string} unitDef - Name of unit to test
  * @param {Object} definition - Definition of unit to test
  *
+ * @returns {void}
  * @throws {QtyError} if unit definition is not valid
  */
 function validateUnitDefinition(unitDef, definition) {
@@ -539,11 +530,11 @@ for (var unitDef in UNITS) {
 /**
  * Returns a list of available units of kind
  *
- * @param {string} [kind]
+ * @param {string} [kind] - kind of units
  * @returns {array} names of units
  * @throws {QtyError} if kind is unknown
  */
-function getUnits (kind) {
+function getUnits(kind) {
   var i;
   var units = [];
   var unitKeys = Object.keys(UNITS);
@@ -554,7 +545,7 @@ function getUnits (kind) {
       }
     }
   }
-  else if (Qty$1.getKinds().indexOf(kind) === -1) {
+  else if (this.getKinds().indexOf(kind) === -1) {
     throw new QtyError("Kind not recognized");
   }
   else {
@@ -579,7 +570,7 @@ function getUnits (kind) {
 /**
  * Returns a list of alternative names for a unit
  *
- * @param {string} unitName
+ * @param {string} unitName - name of unit
  * @returns {string[]} aliases for unit
  * @throws {QtyError} if unit is unknown
  */
@@ -832,18 +823,29 @@ function globalParse(value) {
   }
 
   try {
-    return Qty$1(value);
+    return this(value);
   }
   catch (e) {
     return null;
   }
 }
 
-function Qty$1(initValue, initUnits) {
+/**
+ * Tests if a value is a Qty instance
+ *
+ * @param {*} value - Value to test
+ *
+ * @returns {boolean} true if value is a Qty instance, false otherwise
+ */
+function isQty(value) {
+  return value instanceof Qty;
+}
+
+function Qty(initValue, initUnits) {
   assertValidConstructorArgs.apply(null, arguments);
 
   if (!(isQty(this))) {
-    return new Qty$1(initValue, initUnits);
+    return new Qty(initValue, initUnits);
   }
 
   this.scalar = null;
@@ -887,9 +889,9 @@ function Qty$1(initValue, initUnits) {
   }
 }
 
-Qty$1.prototype = {
+Qty.prototype = {
   // Properly set up constructor
-  constructor: Qty$1,
+  constructor: Qty,
 };
 
 /**
@@ -898,6 +900,7 @@ Qty$1.prototype = {
  * @param {*} value - Value to test
  * @param {string} [units] - Optional units when value is passed as a number
  *
+ * @returns {void}
  * @throws {QtyError} if constructor arguments are invalid
  */
 function assertValidConstructorArgs(value, units) {
@@ -1008,11 +1011,11 @@ function getKinds() {
   }));
 }
 
-Qty$1.prototype.kind = function() {
+Qty.prototype.kind = function() {
   return KINDS[this.signature.toString()];
 };
 
-assign(Qty$1.prototype, {
+assign(Qty.prototype, {
   isDegrees: function() {
     // signature may not have been calculated yet
     return (this.signature === null || this.signature === 400) &&
@@ -1029,18 +1032,18 @@ assign(Qty$1.prototype, {
 function subtractTemperatures(lhs,rhs) {
   var lhsUnits = lhs.units();
   var rhsConverted = rhs.to(lhsUnits);
-  var dstDegrees = Qty$1(getDegreeUnits(lhsUnits));
-  return Qty$1({"scalar": lhs.scalar - rhsConverted.scalar, "numerator": dstDegrees.numerator, "denominator": dstDegrees.denominator});
+  var dstDegrees = Qty(getDegreeUnits(lhsUnits));
+  return Qty({"scalar": lhs.scalar - rhsConverted.scalar, "numerator": dstDegrees.numerator, "denominator": dstDegrees.denominator});
 }
 
 function subtractTempDegrees(temp,deg) {
   var tempDegrees = deg.to(getDegreeUnits(temp.units()));
-  return Qty$1({"scalar": temp.scalar - tempDegrees.scalar, "numerator": temp.numerator, "denominator": temp.denominator});
+  return Qty({"scalar": temp.scalar - tempDegrees.scalar, "numerator": temp.numerator, "denominator": temp.denominator});
 }
 
 function addTempDegrees(temp,deg) {
   var tempDegrees = deg.to(getDegreeUnits(temp.units()));
-  return Qty$1({"scalar": temp.scalar + tempDegrees.scalar, "numerator": temp.numerator, "denominator": temp.denominator});
+  return Qty({"scalar": temp.scalar + tempDegrees.scalar, "numerator": temp.numerator, "denominator": temp.denominator});
 }
 
 function getDegreeUnits(units) {
@@ -1082,7 +1085,7 @@ function toDegrees(src,dst) {
     throw new QtyError("Unknown type for degree conversion to: " + dstUnits);
   }
 
-  return Qty$1({"scalar": dstScalar, "numerator": dst.numerator, "denominator": dst.denominator});
+  return Qty({"scalar": dstScalar, "numerator": dst.numerator, "denominator": dst.denominator});
 }
 
 function toDegK(qty) {
@@ -1107,7 +1110,7 @@ function toDegK(qty) {
     throw new QtyError("Unknown type for temp conversion from: " + units);
   }
 
-  return Qty$1({"scalar": q, "numerator": ["<kelvin>"], "denominator": UNITY_ARRAY});
+  return Qty({"scalar": q, "numerator": ["<kelvin>"], "denominator": UNITY_ARRAY});
 }
 
 function toTemp(src,dst) {
@@ -1130,7 +1133,7 @@ function toTemp(src,dst) {
     throw new QtyError("Unknown type for temp conversion to: " + dstUnits);
   }
 
-  return Qty$1({"scalar": dstScalar, "numerator": dst.numerator, "denominator": dst.denominator});
+  return Qty({"scalar": dstScalar, "numerator": dst.numerator, "denominator": dst.denominator});
 }
 
 function toTempK(qty) {
@@ -1155,10 +1158,10 @@ function toTempK(qty) {
     throw new QtyError("Unknown type for temp conversion from: " + units);
   }
 
-  return Qty$1({"scalar": q, "numerator": ["<temp-K>"], "denominator": UNITY_ARRAY});
+  return Qty({"scalar": q, "numerator": ["<temp-K>"], "denominator": UNITY_ARRAY});
 }
 
-assign(Qty$1.prototype, {
+assign(Qty.prototype, {
   /**
    * Converts to other compatible units.
    * Instance's converted quantities are cached for faster subsequent calls.
@@ -1192,7 +1195,7 @@ assign(Qty$1.prototype, {
     }
 
     // Instantiating target to normalize units
-    target = Qty$1(other);
+    target = Qty(other);
     if (target.units() === this.units()) {
       return this;
     }
@@ -1214,7 +1217,7 @@ assign(Qty$1.prototype, {
       }
       else {
         var q = divSafe(this.baseScalar, target.baseScalar);
-        target = Qty$1({"scalar": q, "numerator": target.numerator, "denominator": target.denominator});
+        target = Qty({"scalar": q, "numerator": target.numerator, "denominator": target.denominator});
       }
     }
 
@@ -1267,10 +1270,10 @@ assign(Qty$1.prototype, {
    */
   toPrec: function(precQuantity) {
     if (isString(precQuantity)) {
-      precQuantity = Qty$1(precQuantity);
+      precQuantity = Qty(precQuantity);
     }
     if (isNumber(precQuantity)) {
-      precQuantity = Qty$1(precQuantity + " " + this.units());
+      precQuantity = Qty(precQuantity + " " + this.units());
     }
 
     if (!this.isUnitless()) {
@@ -1284,10 +1287,12 @@ assign(Qty$1.prototype, {
       throw new QtyError("Divide by zero");
     }
 
-    var precRoundedResult = mulSafe(Math.round(this.scalar / precQuantity.scalar),
-                                       precQuantity.scalar);
+    var precRoundedResult = mulSafe(
+      Math.round(this.scalar / precQuantity.scalar),
+      precQuantity.scalar
+    );
 
-    return Qty$1(precRoundedResult + this.units());
+    return Qty(precRoundedResult + this.units());
   }
 });
 
@@ -1314,8 +1319,8 @@ assign(Qty$1.prototype, {
  *
  */
 function swiftConverter(srcUnits, dstUnits) {
-  var srcQty = Qty$1(srcUnits);
-  var dstQty = Qty$1(dstUnits);
+  var srcQty = Qty(srcUnits);
+  var dstQty = Qty(dstUnits);
 
   if (srcQty.eq(dstQty)) {
     return identity;
@@ -1335,9 +1340,7 @@ function swiftConverter(srcUnits, dstUnits) {
   }
 
   return function converter(value) {
-    var i,
-        length,
-        result;
+    var i, length, result;
     if (!Array.isArray(value)) {
       return convert(value);
     }
@@ -1354,7 +1357,7 @@ function swiftConverter(srcUnits, dstUnits) {
 
 var baseUnitCache = {};
 
-function toBaseUnits (numerator,denominator) {
+function toBaseUnits(numerator,denominator) {
   var num = [];
   var den = [];
   var q = 1;
@@ -1406,28 +1409,28 @@ function toBaseUnits (numerator,denominator) {
     return a.concat(b);
   }, []);
 
-  return Qty$1({"scalar": q, "numerator": num, "denominator": den});
+  return Qty({"scalar": q, "numerator": num, "denominator": den});
 }
 
-Qty$1.parse = globalParse;
+Qty.parse = globalParse;
 
-Qty$1.getUnits = getUnits;
-Qty$1.getAliases = getAliases;
+Qty.getUnits = getUnits;
+Qty.getAliases = getAliases;
 
-Qty$1.mulSafe = mulSafe;
-Qty$1.divSafe = divSafe;
+Qty.mulSafe = mulSafe;
+Qty.divSafe = divSafe;
 
-Qty$1.getKinds = getKinds;
+Qty.getKinds = getKinds;
 
-Qty$1.swiftConverter = swiftConverter;
+Qty.swiftConverter = swiftConverter;
 
-Qty$1.Error = QtyError;
+Qty.Error = QtyError;
 
-assign(Qty$1.prototype, {
+assign(Qty.prototype, {
   // Returns new instance with units of this
   add: function(other) {
     if (isString(other)) {
-      other = Qty$1(other);
+      other = Qty(other);
     }
 
     if (!this.isCompatible(other)) {
@@ -1444,12 +1447,12 @@ assign(Qty$1.prototype, {
       return addTempDegrees(other, this);
     }
 
-    return Qty$1({"scalar": this.scalar + other.to(this).scalar, "numerator": this.numerator, "denominator": this.denominator});
+    return Qty({"scalar": this.scalar + other.to(this).scalar, "numerator": this.numerator, "denominator": this.denominator});
   },
 
   sub: function(other) {
     if (isString(other)) {
-      other = Qty$1(other);
+      other = Qty(other);
     }
 
     if (!this.isCompatible(other)) {
@@ -1466,18 +1469,18 @@ assign(Qty$1.prototype, {
       throw new QtyError("Cannot subtract a temperature from a differential degree unit");
     }
 
-    return Qty$1({"scalar": this.scalar - other.to(this).scalar, "numerator": this.numerator, "denominator": this.denominator});
+    return Qty({"scalar": this.scalar - other.to(this).scalar, "numerator": this.numerator, "denominator": this.denominator});
   },
 
   mul: function(other) {
     if (isNumber(other)) {
-      return Qty$1({"scalar": mulSafe(this.scalar, other), "numerator": this.numerator, "denominator": this.denominator});
+      return Qty({"scalar": mulSafe(this.scalar, other), "numerator": this.numerator, "denominator": this.denominator});
     }
     else if (isString(other)) {
-      other = Qty$1(other);
+      other = Qty(other);
     }
 
-    if ((this.isTemperature()||other.isTemperature()) && !(this.isUnitless()||other.isUnitless())) {
+    if ((this.isTemperature() || other.isTemperature()) && !(this.isUnitless() || other.isUnitless())) {
       throw new QtyError("Cannot multiply by temperatures");
     }
 
@@ -1490,9 +1493,9 @@ assign(Qty$1.prototype, {
     if (op1.isCompatible(op2) && op1.signature !== 400) {
       op2 = op2.to(op1);
     }
-    var numden = cleanTerms(op1.numerator.concat(op2.numerator), op1.denominator.concat(op2.denominator));
+    var numdenscale = cleanTerms(op1.numerator, op1.denominator, op2.numerator, op2.denominator);
 
-    return Qty$1({"scalar": mulSafe(op1.scalar, op2.scalar), "numerator": numden[0], "denominator": numden[1]});
+    return Qty({"scalar": mulSafe(op1.scalar, op2.scalar, numdenscale[2]), "numerator": numdenscale[0], "denominator": numdenscale[1]});
   },
 
   div: function(other) {
@@ -1500,10 +1503,10 @@ assign(Qty$1.prototype, {
       if (other === 0) {
         throw new QtyError("Divide by zero");
       }
-      return Qty$1({"scalar": this.scalar / other, "numerator": this.numerator, "denominator": this.denominator});
+      return Qty({"scalar": this.scalar / other, "numerator": this.numerator, "denominator": this.denominator});
     }
     else if (isString(other)) {
-      other = Qty$1(other);
+      other = Qty(other);
     }
 
     if (other.scalar === 0) {
@@ -1526,9 +1529,9 @@ assign(Qty$1.prototype, {
     if (op1.isCompatible(op2) && op1.signature !== 400) {
       op2 = op2.to(op1);
     }
-    var numden = cleanTerms(op1.numerator.concat(op2.denominator), op1.denominator.concat(op2.numerator));
+    var numdenscale = cleanTerms(op1.numerator, op1.denominator, op2.denominator, op2.numerator);
 
-    return Qty$1({"scalar": op1.scalar / op2.scalar, "numerator": numden[0], "denominator": numden[1]});
+    return Qty({"scalar": mulSafe(op1.scalar, numdenscale[2]) / op2.scalar, "numerator": numdenscale[0], "denominator": numdenscale[1]});
   },
 
   // Returns a Qty that is the inverse of this Qty,
@@ -1539,59 +1542,59 @@ assign(Qty$1.prototype, {
     if (this.scalar === 0) {
       throw new QtyError("Divide by zero");
     }
-    return Qty$1({"scalar": 1 / this.scalar, "numerator": this.denominator, "denominator": this.numerator});
+    return Qty({"scalar": 1 / this.scalar, "numerator": this.denominator, "denominator": this.numerator});
   }
 });
 
-function cleanTerms(num, den) {
-  num = num.filter(function(val) {
+function cleanTerms(num1, den1, num2, den2) {
+  function notUnity(val) {
     return val !== UNITY;
-  });
-  den = den.filter(function(val) {
-    return val !== UNITY;
-  });
+  }
+
+  num1 = num1.filter(notUnity);
+  num2 = num2.filter(notUnity);
+  den1 = den1.filter(notUnity);
+  den2 = den2.filter(notUnity);
 
   var combined = {};
 
-  var k;
-  for (var i = 0; i < num.length; i++) {
-    if (PREFIX_VALUES[num[i]]) {
-      k = [num[i], num[i + 1]];
-      i++;
-    }
-    else {
-      k = num[i];
-    }
-    if (k && k !== UNITY) {
-      if (combined[k]) {
-        combined[k][0]++;
+  function combineTerms(terms, direction) {
+    var k;
+    var prefix;
+    var prefixValue;
+    for (var i = 0; i < terms.length; i++) {
+      if (PREFIX_VALUES[terms[i]]) {
+        k = terms[i + 1];
+        prefix = terms[i];
+        prefixValue = PREFIX_VALUES[prefix];
+        i++;
       }
       else {
-        combined[k] = [1, k];
+        k = terms[i];
+        prefix = null;
+        prefixValue = 1;
+      }
+      if (k && k !== UNITY) {
+        if (combined[k]) {
+          combined[k][0] += direction;
+          var combinedPrefixValue = combined[k][2] ? PREFIX_VALUES[combined[k][2]] : 1;
+          combined[k][direction === 1 ? 3 : 4] *= divSafe(prefixValue, combinedPrefixValue);
+        }
+        else {
+          combined[k] = [direction, k, prefix, 1, 1];
+        }
       }
     }
   }
 
-  for (var j = 0; j < den.length; j++) {
-    if (PREFIX_VALUES[den[j]]) {
-      k = [den[j], den[j + 1]];
-      j++;
-    }
-    else {
-      k = den[j];
-    }
-    if (k && k !== UNITY) {
-      if (combined[k]) {
-        combined[k][0]--;
-      }
-      else {
-        combined[k] = [-1, k];
-      }
-    }
-  }
+  combineTerms(num1, 1);
+  combineTerms(den1, -1);
+  combineTerms(num2, 1);
+  combineTerms(den2, -1);
 
-  num = [];
-  den = [];
+  var num = [];
+  var den = [];
+  var scale = 1;
 
   for (var prop in combined) {
     if (combined.hasOwnProperty(prop)) {
@@ -1599,14 +1602,15 @@ function cleanTerms(num, den) {
       var n;
       if (item[0] > 0) {
         for (n = 0; n < item[0]; n++) {
-          num.push(item[1]);
+          num.push(item[2] === null ? item[1] : [item[2], item[1]]);
         }
       }
       else if (item[0] < 0) {
         for (n = 0; n < -item[0]; n++) {
-          den.push(item[1]);
+          den.push(item[2] === null ? item[1] : [item[2], item[1]]);
         }
       }
+      scale *= divSafe(item[3], item[4]);
     }
   }
 
@@ -1625,10 +1629,10 @@ function cleanTerms(num, den) {
     return a.concat(b);
   }, []);
 
-  return [num, den];
+  return [num, den, scale];
 }
 
-assign(Qty$1.prototype, {
+assign(Qty.prototype, {
   eq: function(other) {
     return this.compareTo(other) === 0;
   },
@@ -1663,7 +1667,7 @@ assign(Qty$1.prototype, {
   //   If including inverses in the sort is needed, I suggest writing: Qty.sort(qtyArray,units)
   compareTo: function(other) {
     if (isString(other)) {
-      return this.compareTo(Qty$1(other));
+      return this.compareTo(Qty(other));
     }
     if (!this.isCompatible(other)) {
       throwIncompatibleUnits(this.units(), other.units());
@@ -1687,7 +1691,7 @@ assign(Qty$1.prototype, {
   }
 });
 
-assign(Qty$1.prototype, {
+assign(Qty.prototype, {
   // returns true if no associated units
   // false, even if the units are "unitless" like 'radians, each, etc'
   isUnitless: function() {
@@ -1707,7 +1711,7 @@ assign(Qty$1.prototype, {
   */
   isCompatible: function(other) {
     if (isString(other)) {
-      return this.isCompatible(Qty$1(other));
+      return this.isCompatible(Qty(other));
     }
 
     if (!(isQty(other))) {
@@ -1813,8 +1817,8 @@ NestedMap.prototype.set = function(keys, value) {
 /**
  * Default formatter
  *
- * @param {number} scalar
- * @param {string} units
+ * @param {number} scalar - scalar value
+ * @param {string} units - units as string
  *
  * @returns {string} formatted result
  */
@@ -1833,9 +1837,9 @@ function defaultFormatter(scalar, units) {
  *
  * @returns {string} formatted result
  */
-Qty$1.formatter = defaultFormatter;
+Qty.formatter = defaultFormatter;
 
-assign(Qty$1.prototype, {
+assign(Qty.prototype, {
 
   // returns the 'unit' part of the Unit object without the scalar
   units: function() {
@@ -1843,15 +1847,15 @@ assign(Qty$1.prototype, {
       return this._units;
     }
 
-    var numIsUnity = compareArray(this.numerator, UNITY_ARRAY),
-        denIsUnity = compareArray(this.denominator, UNITY_ARRAY);
+    var numIsUnity = compareArray(this.numerator, UNITY_ARRAY);
+    var denIsUnity = compareArray(this.denominator, UNITY_ARRAY);
     if (numIsUnity && denIsUnity) {
       this._units = "";
       return this._units;
     }
 
-    var numUnits = stringifyUnits(this.numerator),
-        denUnits = stringifyUnits(this.denominator);
+    var numUnits = stringifyUnits(this.numerator);
+    var denUnits = stringifyUnits(this.denominator);
     this._units = numUnits + (denIsUnity ? "" : ("/" + denUnits));
     return this._units;
   },
@@ -1925,7 +1929,7 @@ assign(Qty$1.prototype, {
       }
     }
 
-    formatter = formatter || Qty$1.formatter;
+    formatter = formatter || Qty.formatter;
     var targetQty = this.to(targetUnits);
     return formatter.call(this, targetQty.scalar, targetQty.units());
   }
@@ -1977,7 +1981,7 @@ function getOutputNames(units) {
   return unitNames;
 }
 
-function simplify (units) {
+function simplify(units) {
   // this turns ['s','m','s'] into ['s2','m']
 
   var unitCounts = units.reduce(function(acc, unit) {
@@ -1996,8 +2000,6 @@ function simplify (units) {
   });
 }
 
-Qty$1.version = "1.7.0";
+Qty.version = "1.7.5";
 
-return Qty$1;
-
-})));
+export default Qty;

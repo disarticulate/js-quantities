@@ -1,16 +1,3 @@
-import Qty from "../quantities.js";
-
-/**
- * Tests if a value is a Qty instance
- *
- * @param {*} value - Value to test
- *
- * @returns {boolean} true if value is a Qty instance, false otherwise
- */
-export function isQty(value) {
-  return value instanceof Qty;
-}
-
 /**
  * Tests if a value is a string
  *
@@ -89,8 +76,9 @@ export function assign(target, properties) {
  * Safely multiplies numbers while avoiding floating errors
  * like 0.1 * 0.1 => 0.010000000000000002
  *
+ * @param {...number} numbers - numbers to multiply
+ *
  * @returns {number} result
- * @param {...number} number
  */
 export function mulSafe() {
   var result = 1, decimals = 0;
