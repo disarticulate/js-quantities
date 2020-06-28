@@ -1,3 +1,31 @@
+1.7.5 / 2020-04-05
+------------------
+
+* Update development dependencies
+* Use ESLint as linter
+
+1.7.4 / 2019-06-26
+------------------
+
+* Add Imperial Gallons, and Barrels (US Beer, Imperial Beer, Oil)
+* Add support for imperial version of fluid ounces and pints
+
+1.7.3 / 2018-12-15
+------------------
+
+* Fix some inconsistent resulting units when multiplying or dividing
+quantities (#94)
+
+1.7.2 / 2018-03-31
+------------------
+
+* Remove `module` from package definition (Fix #91)
+
+1.7.1 / 2018-03-25
+------------------
+
+* Add missing unit aliases
+
 1.7.0 / 2017-08-23
 ------------------
 

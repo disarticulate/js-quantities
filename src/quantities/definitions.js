@@ -1,4 +1,3 @@
-import Qty from "./constructor.js";
 import { isNumber } from "./utils.js";
 import QtyError from "./error.js";
 
@@ -45,7 +44,7 @@ export var UNITS = {
   "<foot>"  :  [["ft","foot","feet","us-ft","us_ft","'"], 0.3048, "length", ["<meter>"]],
   "<yard>"  :  [["yd","yard","yards"], 0.9144, "length", ["<meter>"]],
   "<mile>"  :  [["mi","mile","miles"], 1609.344, "length", ["<meter>"]],
-  "<naut-mile>" : [["nmi"], 1852, "length", ["<meter>"]],
+  "<naut-mile>" : [["nmi","naut-mile"], 1852, "length", ["<meter>"]],
   "<league>":  [["league","leagues"], 4828, "length", ["<meter>"]],
   "<furlong>": [["furlong","furlongs"], 201.2, "length", ["<meter>"]],
   "<rod>"   :  [["rd","rod","rods"], 5.029, "length", ["<meter>"]],
@@ -60,15 +59,15 @@ export var UNITS = {
   "<light-minute>":[["lmin","light-minute"], 17987550000, "length", ["<meter>"]],
   "<light-year>" : [["ly","light-year"], 9460528000000000, "length", ["<meter>"]],
   "<parsec>"  : [["pc","parsec","parsecs"], 30856780000000000, "length", ["<meter>"]],
-  "<datamile>"  :  [["DM"], 1828.8, "length", ["<meter>"]],
+  "<datamile>"  :  [["DM","datamile"], 1828.8, "length", ["<meter>"]],
 
   /* mass */
   "<kilogram>" : [["kg","kilogram","kilograms"], 1.0, "mass", ["<kilogram>"]],
   "<AMU>" : [["u","AMU","amu"], 1.660538921e-27, "mass", ["<kilogram>"]],
   "<dalton>" : [["Da","Dalton","Daltons","dalton","daltons"], 1.660538921e-27, "mass", ["<kilogram>"]],
   "<slug>" : [["slug","slugs"], 14.5939029, "mass", ["<kilogram>"]],
-  "<short-ton>" : [["tn","ton"], 907.18474, "mass", ["<kilogram>"]],
-  "<metric-ton>":[["tonne"], 1000, "mass", ["<kilogram>"]],
+  "<short-ton>" : [["tn","ton","short-ton"], 907.18474, "mass", ["<kilogram>"]],
+  "<metric-ton>":[["tonne","metric-ton"], 1000, "mass", ["<kilogram>"]],
   "<carat>" : [["ct","carat","carats"], 0.0002, "mass", ["<kilogram>"]],
   "<pound>" : [["lbs","lb","pound","pounds","#"], 0.45359237, "mass", ["<kilogram>"]],
   "<ounce>" : [["oz","ounce","ounces"], 0.0283495231, "mass", ["<kilogram>"]],
@@ -85,13 +84,19 @@ export var UNITS = {
   /* volume */
   "<liter>" : [["l","L","liter","liters","litre","litres"], 0.001, "volume", ["<meter>","<meter>","<meter>"]],
   "<gallon>":  [["gal","gallon","gallons"], 0.0037854118, "volume", ["<meter>","<meter>","<meter>"]],
+  "<gallon-imp>":  [["galimp","gallon-imp","gallons-imp"], 0.0045460900, "volume", ["<meter>","<meter>","<meter>"]],
   "<quart>":  [["qt","quart","quarts"], 0.00094635295, "volume", ["<meter>","<meter>","<meter>"]],
   "<pint>":  [["pt","pint","pints"], 0.000473176475, "volume", ["<meter>","<meter>","<meter>"]],
+  "<pint-imp>":  [["ptimp","pint-imp","pints-imp"], 5.6826125e-4, "volume", ["<meter>","<meter>","<meter>"]],
   "<cup>":  [["cu","cup","cups"], 0.000236588238, "volume", ["<meter>","<meter>","<meter>"]],
   "<fluid-ounce>":  [["floz","fluid-ounce","fluid-ounces"], 2.95735297e-5, "volume", ["<meter>","<meter>","<meter>"]],
+  "<fluid-ounce-imp>":  [["flozimp", "floz-imp","fluid-ounce-imp","fluid-ounces-imp"], 2.84130625e-5, "volume", ["<meter>","<meter>","<meter>"]],
   "<tablespoon>":  [["tb","tbsp","tbs","tablespoon","tablespoons"], 1.47867648e-5, "volume", ["<meter>","<meter>","<meter>"]],
   "<teaspoon>":  [["tsp","teaspoon","teaspoons"], 4.92892161e-6, "volume", ["<meter>","<meter>","<meter>"]],
   "<bushel>":  [["bu","bsh","bushel","bushels"], 0.035239072, "volume", ["<meter>","<meter>","<meter>"]],
+  "<oilbarrel>":  [["bbl","oilbarrel", "oilbarrels", "oil-barrel","oil-barrels"], 0.158987294928, "volume", ["<meter>","<meter>","<meter>"]],
+  "<beerbarrel>":  [["bl","bl-us","beerbarrel", "beerbarrels", "beer-barrel","beer-barrels"], 0.1173477658, "volume", ["<meter>","<meter>","<meter>"]],
+  "<beerbarrel-imp>":  [["blimp","bl-imp","beerbarrel-imp", "beerbarrels-imp", "beer-barrel-imp","beer-barrels-imp"], 0.16365924, "volume", ["<meter>","<meter>","<meter>"]],
 
   /* speed */
   "<kph>" : [["kph"], 0.277777778, "speed", ["<meter>"], ["<second>"]],
@@ -107,10 +112,10 @@ export var UNITS = {
   "<celsius>" : [["degC","celsius","celsius","centigrade"], 1.0, "temperature", ["<kelvin>"]],
   "<fahrenheit>" : [["degF","fahrenheit"], 5 / 9, "temperature", ["<kelvin>"]],
   "<rankine>" : [["degR","rankine"], 5 / 9, "temperature", ["<kelvin>"]],
-  "<temp-K>"  : [["tempK"], 1.0, "temperature", ["<temp-K>"]],
-  "<temp-C>"  : [["tempC"], 1.0, "temperature", ["<temp-K>"]],
-  "<temp-F>"  : [["tempF"], 5 / 9, "temperature", ["<temp-K>"]],
-  "<temp-R>"  : [["tempR"], 5 / 9, "temperature", ["<temp-K>"]],
+  "<temp-K>"  : [["tempK","temp-K"], 1.0, "temperature", ["<temp-K>"]],
+  "<temp-C>"  : [["tempC","temp-C"], 1.0, "temperature", ["<temp-K>"]],
+  "<temp-F>"  : [["tempF","temp-F"], 5 / 9, "temperature", ["<temp-K>"]],
+  "<temp-R>"  : [["tempR","temp-R"], 5 / 9, "temperature", ["<temp-K>"]],
 
   /* time */
   "<second>":  [["s","sec","secs","second","seconds"], 1.0, "time", ["<second>"]],
@@ -131,8 +136,8 @@ export var UNITS = {
   "<torr>" : [["torr"], 133.322368, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
   "<atm>" : [["atm","ATM","atmosphere","atmospheres"], 101325, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
   "<psi>" : [["psi"], 6894.76, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
-  "<cmh2o>" : [["cmH2O"], 98.0638, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
-  "<inh2o>" : [["inH2O"], 249.082052, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
+  "<cmh2o>" : [["cmH2O","cmh2o"], 98.0638, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
+  "<inh2o>" : [["inH2O","inh2o"], 249.082052, "pressure", ["<kilogram>"],["<meter>","<second>","<second>"]],
 
   /* viscosity */
   "<poise>"  : [["P","poise"], 0.1, "viscosity", ["<kilogram>"],["<meter>","<second>"] ],
@@ -147,7 +152,7 @@ export var UNITS = {
 
   /* activity */
   "<katal>" :  [["kat","katal","Katal"], 1.0, "activity", ["<mole>"], ["<second>"]],
-  "<unit>"  :  [["U","enzUnit"], 16.667e-16, "activity", ["<mole>"], ["<second>"]],
+  "<unit>"  :  [["U","enzUnit","unit"], 16.667e-16, "activity", ["<mole>"], ["<second>"]],
 
   /* capacitance */
   "<farad>" :  [["F","farad","Farad"], 1.0, "capacitance", ["<second>","<second>","<second>","<second>","<ampere>","<ampere>"], ["<meter>", "<meter>", "<kilogram>"]],
@@ -188,7 +193,7 @@ export var UNITS = {
   "<btu>"   :  [["BTU","btu","BTUs"], 1055.056, "energy", ["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
   "<calorie>" :  [["cal","calorie","calories"], 4.18400, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
   "<Calorie>" :  [["Cal","Calorie","Calories"], 4184.00, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
-  "<therm-US>" : [["th","therm","therms","Therm"], 105480400, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
+  "<therm-US>" : [["th","therm","therms","Therm","therm-US"], 105480400, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
   "<Wh>" : [["Wh"], 3600, "energy",["<meter>","<meter>","<kilogram>"], ["<second>","<second>"]],
 
   /* force */
@@ -228,15 +233,15 @@ export var UNITS = {
 
   /* power */
   "<watt>"  : [["W","watt","watts"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
-  "<volt-ampere>"  : [["VA"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
-  "<volt-ampere-reactive>"  : [["var","Var","VAr","VAR"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
+  "<volt-ampere>"  : [["VA","volt-ampere"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
+  "<volt-ampere-reactive>"  : [["var","Var","VAr","VAR","volt-ampere-reactive"], 1.0, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
   "<horsepower>"  :  [["hp","horsepower"], 745.699872, "power", ["<kilogram>","<meter>","<meter>"], ["<second>","<second>","<second>"]],
 
   /* radiation */
   "<gray>" : [["Gy","gray","grays"], 1.0, "radiation", ["<meter>","<meter>"], ["<second>","<second>"]],
   "<roentgen>" : [["R","roentgen"], 0.009330, "radiation", ["<meter>","<meter>"], ["<second>","<second>"]],
   "<sievert>" : [["Sv","sievert","sieverts"], 1.0, "radiation", ["<meter>","<meter>"], ["<second>","<second>"]],
-  "<becquerel>" : [["Bq","bequerel","bequerels"], 1.0, "radiation", ["<1>"],["<second>"]],
+  "<becquerel>" : [["Bq","becquerel","becquerels"], 1.0, "radiation", ["<1>"],["<second>"]],
   "<curie>" : [["Ci","curie","curies"], 3.7e10, "radiation", ["<1>"],["<second>"]],
 
   /* rate */
@@ -254,8 +259,8 @@ export var UNITS = {
   "<cell>" : [["cells","cell"], 1, "counting", ["<each>"]],
   "<each>" : [["each"], 1.0, "counting", ["<each>"]],
   "<count>" : [["count"], 1.0, "counting", ["<each>"]],
-  "<base-pair>"  : [["bp"], 1.0, "counting", ["<each>"]],
-  "<nucleotide>" : [["nt"], 1.0, "counting", ["<each>"]],
+  "<base-pair>"  : [["bp","base-pair"], 1.0, "counting", ["<each>"]],
+  "<nucleotide>" : [["nt","nucleotide"], 1.0, "counting", ["<each>"]],
   "<molecule>" : [["molecule","molecules"], 1.0, "counting", ["<1>"]],
   "<dozen>" :  [["doz","dz","dozen"],12.0,"prefix_only", ["<each>"]],
   "<percent>": [["%","percent"], 0.01, "prefix_only", ["<1>"]],
@@ -278,6 +283,7 @@ export var UNITY_ARRAY = [UNITY];
  * @param {string} unitDef - Name of unit to test
  * @param {Object} definition - Definition of unit to test
  *
+ * @returns {void}
  * @throws {QtyError} if unit definition is not valid
  */
 function validateUnitDefinition(unitDef, definition) {
@@ -336,11 +342,11 @@ for (var unitDef in UNITS) {
 /**
  * Returns a list of available units of kind
  *
- * @param {string} [kind]
+ * @param {string} [kind] - kind of units
  * @returns {array} names of units
  * @throws {QtyError} if kind is unknown
  */
-export function getUnits (kind) {
+export function getUnits(kind) {
   var i;
   var units = [];
   var unitKeys = Object.keys(UNITS);
@@ -351,7 +357,7 @@ export function getUnits (kind) {
       }
     }
   }
-  else if (Qty.getKinds().indexOf(kind) === -1) {
+  else if (this.getKinds().indexOf(kind) === -1) {
     throw new QtyError("Kind not recognized");
   }
   else {
@@ -376,7 +382,7 @@ export function getUnits (kind) {
 /**
  * Returns a list of alternative names for a unit
  *
- * @param {string} unitName
+ * @param {string} unitName - name of unit
  * @returns {string[]} aliases for unit
  * @throws {QtyError} if unit is unknown
  */
